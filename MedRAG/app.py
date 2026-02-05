@@ -13,12 +13,8 @@ from rag_pipeline import rag_answer
 
 app = FastAPI(title="Medical RAG System")
 
-
 # HELPER FUNCTIONS
-
-
 def to_float(value) -> float:
-    """Convert any numeric type to Python float"""
     if value is None:
         return 0.0
     try:
@@ -28,7 +24,6 @@ def to_float(value) -> float:
 
 
 def sanitize_for_json(obj):
-    """Recursively convert numpy types to Python native types"""
     if isinstance(obj, dict):
         return {k: sanitize_for_json(v) for k, v in obj.items()}
     elif isinstance(obj, list):
@@ -228,13 +223,9 @@ class OfflineEvaluator:
         }
 
 
-
 evaluator = OfflineEvaluator()
 
-
-
 #  MODELS
-
 
 class Query(BaseModel):
     question: str
@@ -248,11 +239,7 @@ class EvalQuestion(BaseModel):
 class EvalRequest(BaseModel):
     questions: List[EvalQuestion]
 
-
-
 #   EVALUATION DATA
-
-
 DEFAULT_EVAL_DATA = [
     {
         "question": "What is hypertension?",
@@ -276,11 +263,7 @@ DEFAULT_EVAL_DATA = [
     }
 ]
 
-
-# ============================================================================
-#                              API ENDPOINTS
-# ============================================================================
-
+#   API ENDPOINTS
 @app.get("/", response_class=HTMLResponse)
 async def home():
   
@@ -429,9 +412,7 @@ async def stream_evaluation():
     )
 
 
-
 # HTML TEMPLATE
-
 
 def get_html_template():
     return '''
@@ -1503,10 +1484,7 @@ def get_html_template():
 </html>
 '''
 
-
-
 #   MAIN
-
 
 if __name__ == "__main__":
     import uvicorn
@@ -1523,3 +1501,4 @@ if __name__ == "__main__":
     print("  ✓ No external API required")
     print("=" * 60)
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
